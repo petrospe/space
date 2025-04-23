@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Neptune with Galaxy</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; }
+    canvas { display: block; }
+
+    #exit-button {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    #exit-button:hover {
+      background: rgba(255, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div id="exit-button">✖</div>
+  <script>
+    function loadScript(src, callback) {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = callback;
+      document.head.appendChild(script);
+    }
+
+    loadScript('https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js', () => {
+      loadScript('https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js', initApp);
+    });
+
+    function initApp() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 12;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0x222222));
+        const mainLight = new THREE.PointLight(0xffffff, 2, 100);
+        mainLight.position.set(-20, 10, -30);
+        scene.add(mainLight);
+
+        // ☀️ Sun
+        const sunGeometry = new THREE.SphereGeometry(2, 64, 64);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xFFE87C });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        sun.position.set(-20, 10, -30);
+        scene.add(sun);
+
+        const glowMaterial = new THREE.SpriteMaterial({ 
+            map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/lensflare/lensflare0.png'),
+            color: 0xffffaa,
+            transparent: true,
+            blending: THREE.AdditiveBlending
+        });
+        const sprite = new THREE.Sprite(glowMaterial);
+        sprite.scale.set(10, 10, 1.0);
+        sprite.position.copy(sun.position);
+        scene.add(sprite);
+
+        // 🌌 Galaxy Background
+        const loader = new THREE.TextureLoader();
+        loader.load('images/starmap_random_2020_4k_gal.png', texture => {
+            const galaxyGeo = new THREE.SphereGeometry(100, 64, 64);
+            const galaxyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            const galaxy = new THREE.Mesh(galaxyGeo, galaxyMat);
+            scene.add(galaxy);
+        });
+
+        // 🔵 Neptune
+        loader.load('images/Solarsystemscope_texture_2k_neptune.jpg', neptuneTexture => {
+            const neptuneGeo = new THREE.SphereGeometry(1.2, 64, 64);
+            const neptuneMat = new THREE.MeshStandardMaterial({ map: neptuneTexture });
+            const neptune = new THREE.Mesh(neptuneGeo, neptuneMat);
+
+            const neptuneSystem = new THREE.Group();
+            neptuneSystem.add(neptune);
+
+            const neptuneOrbit = new THREE.Group();
+            neptuneSystem.position.x = 9; // Neptune distance from Sun
+            neptuneOrbit.add(neptuneSystem);
+            scene.add(neptuneOrbit);
+
+            // 🌕 Triton and Nereid
+            const moons = [];
+            const moonData = [
+                { name: 'Triton', color: 0xAAAAAA, size: 0.12, distance: 1.6, speed: 0.02 },
+                { name: 'Nereid', color: 0xBBBBBB, size: 0.08, distance: 2.4, speed: 0.01 }
+            ];
+
+            moonData.forEach(data => {
+                const moonMat = new THREE.MeshStandardMaterial({ color: data.color });
+                const moonGeo = new THREE.SphereGeometry(data.size, 32, 32);
+                const moon = new THREE.Mesh(moonGeo, moonMat);
+                moon.userData = {
+                    angle: Math.random() * Math.PI * 2,
+                    distance: data.distance,
+                    speed: data.speed
+                };
+                moon.position.x = data.distance;
+                neptuneSystem.add(moon);
+                moons.push(moon);
+            });
+
+            // 🌀 Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                neptune.rotation.y += 0.001;
+                neptuneOrbit.rotation.y += 0.0001;
+
+                moons.forEach(moon => {
+                    moon.userData.angle += moon.userData.speed;
+                    moon.position.x = Math.cos(moon.userData.angle) * moon.userData.distance;
+                    moon.position.z = Math.sin(moon.userData.angle) * moon.userData.distance;
+                });
+
+                controls.update();
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+    
+    document.getElementById('exit-button').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

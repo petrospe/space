@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pulsar in a Globular Cluster with Galaxy</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: black; }
+    canvas { display: block; }
+
+    #exit-button {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    #exit-button:hover {
+      background: rgba(255, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div id="exit-button">✖</div>
+  <script>
+    function loadScript(src, callback) {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = callback;
+      document.head.appendChild(script);
+    }
+
+    loadScript('https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js', () => {
+      loadScript('https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js', initApp);
+    });
+
+    function initApp() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 50;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        scene.add(new THREE.AmbientLight(0x111111));
+
+        // 🌌 Cosmic Background
+        const loader = new THREE.TextureLoader();
+        loader.load('images/starmap_random_2020_4k_gal.png', texture => {
+            const bgGeo = new THREE.SphereGeometry(200, 64, 64);
+            const bgMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            scene.add(new THREE.Mesh(bgGeo, bgMat));
+        });
+
+        // ✨ Circular texture for cluster stars
+        const starTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+        const clusterMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.4,
+            map: starTexture,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        // 🌀 Globular Cluster
+        const starCount = 3000;
+        const positions = [];
+        for (let i = 0; i < starCount; i++) {
+            let r = Math.random() * 20 + 5; // Avoid center overlap
+            const theta = Math.random() * 2 * Math.PI;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
+            positions.push(x, y, z);
+        }
+
+        const clusterGeometry = new THREE.BufferGeometry().setAttribute(
+            'position',
+            new THREE.Float32BufferAttribute(positions, 3)
+        );
+        const cluster = new THREE.Points(clusterGeometry, clusterMaterial);
+        scene.add(cluster);
+
+        // 🌟 Pulsar (neutron star)
+        const pulsarGeo = new THREE.SphereGeometry(1.2, 32, 32);
+        const pulsarTexture = new THREE.TextureLoader().load('images/freepik__abstract-background-featuring-dynamic-lines-and-cu__65590.jpeg'); // or your preferred nebula/star texture
+        const pulsarMat = new THREE.MeshBasicMaterial({ 
+            map: pulsarTexture,
+            color: 0x819293,
+            emissive: 0x5f9ea0,
+            emissiveIntensity: 1.5,
+            roughness: 0.3,
+            metalness: 0.6,
+            side: THREE.DoubleSide
+        }); // pale yellow-white
+        const pulsar = new THREE.Mesh(pulsarGeo, pulsarMat);
+        scene.add(pulsar);
+
+        // 📡 Radio Jets
+        const jetMaterial = new THREE.MeshBasicMaterial({
+            color: 0x99ccff,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const jetHeight = 10;
+        const jetRadius = 0.3;
+
+        // Top Jet
+        const topJetGeo = new THREE.ConeGeometry(jetRadius, jetHeight, 32, 1, true);
+        const topJet = new THREE.Mesh(topJetGeo, jetMaterial);
+        topJet.position.set(0, jetHeight / 2, 0);
+        scene.add(topJet);
+
+        // Bottom Jet (clone and flip)
+        const bottomJet = topJet.clone();
+        bottomJet.rotation.x = Math.PI; // flip upside-down
+        bottomJet.position.set(0, -jetHeight / 2, 0);
+        scene.add(bottomJet);
+
+        // Attach both jets to pulsar so they rotate together
+        pulsar.add(topJet);
+        pulsar.add(bottomJet);
+
+        // Pulsar beam (sprite)
+        const beamTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/lensflare/lensflare0.png');
+        const beamMat = new THREE.SpriteMaterial({
+            map: beamTexture,
+            color: 0xffffff,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        const beam = new THREE.Sprite(beamMat);
+        beam.scale.set(10, 10, 1.0);
+        scene.add(beam);
+
+        // 🎬 Animate
+        let pulseScale = 1;
+        let scaleDirection = 1;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            pulsar.rotation.y += 0.1;
+            pulsar.rotation.x += 0.02;
+
+            pulseScale += scaleDirection * 0.1;
+            if (pulseScale > 2.5 || pulseScale < 1) scaleDirection *= -1;
+            beam.scale.set(pulseScale * 5, pulseScale * 5, 1);
+            beam.position.copy(pulsar.position);
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+   
+    document.getElementById('exit-button').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

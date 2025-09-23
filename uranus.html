@@ -52,6 +52,10 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
+        
+        // Limit zoom out to prevent seeing black hole
+        controls.minDistance = 5;
+        controls.maxDistance = 100;
 
         // Lighting
         scene.add(new THREE.AmbientLight(0x222222));
@@ -77,13 +81,20 @@
         sprite.position.copy(sun.position);
         scene.add(sprite);
 
-        // 🌌 Galaxy Background
+        // 🌌 Galaxy Background - Reliable galaxy background
         const loader = new THREE.TextureLoader();
         loader.load('images/starmap_random_2020_4k_gal.png', texture => {
-            const galaxyGeo = new THREE.SphereGeometry(100, 64, 64);
-            const galaxyMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            // Create a very large background sphere
+            const galaxyGeo = new THREE.SphereGeometry(500, 64, 64);
+            const galaxyMat = new THREE.MeshBasicMaterial({ 
+                map: texture, 
+                side: THREE.BackSide 
+            });
             const galaxy = new THREE.Mesh(galaxyGeo, galaxyMat);
             scene.add(galaxy);
+            
+            // Keep background centered and static
+            galaxy.position.set(0, 0, 0);
         });
 
         // 🧊 Uranus

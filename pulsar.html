@@ -52,15 +52,42 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
+        
+        // Limit zoom out to prevent seeing black hole
+        controls.minDistance = 5;
+        controls.maxDistance = 100;
 
+        // Enhanced lighting for more realistic pulsar
         scene.add(new THREE.AmbientLight(0x111111));
+        
+        // Pulsar core light
+        const pulsarLight = new THREE.PointLight(0xffffff, 2, 50);
+        pulsarLight.position.set(0, 0, 0);
+        scene.add(pulsarLight);
+        
+        // Jet lighting
+        const jetLight1 = new THREE.PointLight(0x87ceeb, 1, 30);
+        jetLight1.position.set(0, 10, 0);
+        scene.add(jetLight1);
+        
+        const jetLight2 = new THREE.PointLight(0x87ceeb, 1, 30);
+        jetLight2.position.set(0, -10, 0);
+        scene.add(jetLight2);
 
-        // 🌌 Cosmic Background
+        // 🌌 Cosmic Background - Reliable galaxy background
         const loader = new THREE.TextureLoader();
         loader.load('images/starmap_random_2020_4k_gal.png', texture => {
-            const bgGeo = new THREE.SphereGeometry(200, 64, 64);
-            const bgMat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
-            scene.add(new THREE.Mesh(bgGeo, bgMat));
+            // Create a very large background sphere
+            const bgGeo = new THREE.SphereGeometry(500, 64, 64);
+            const bgMat = new THREE.MeshBasicMaterial({ 
+                map: texture, 
+                side: THREE.BackSide 
+            });
+            const background = new THREE.Mesh(bgGeo, bgMat);
+            scene.add(background);
+            
+            // Keep background centered and static
+            background.position.set(0, 0, 0);
         });
 
         // ✨ Circular texture for cluster stars
@@ -94,50 +121,92 @@
         const cluster = new THREE.Points(clusterGeometry, clusterMaterial);
         scene.add(cluster);
 
-        // 🌟 Pulsar (neutron star)
-        const pulsarGeo = new THREE.SphereGeometry(1.2, 32, 32);
-        const pulsarTexture = new THREE.TextureLoader().load('images/freepik__abstract-background-featuring-dynamic-lines-and-cu__65590.jpeg'); // or your preferred nebula/star texture
-        const pulsarMat = new THREE.MeshBasicMaterial({ 
-            map: pulsarTexture,
-            color: 0x819293,
-            emissive: 0x5f9ea0,
-            emissiveIntensity: 1.5,
-            roughness: 0.3,
-            metalness: 0.6,
+        // 🌟 Pulsar (neutron star) - More realistic
+        const pulsarGeo = new THREE.SphereGeometry(1.0, 64, 64);
+        
+        // Create a more realistic neutron star material
+        const pulsarMat = new THREE.MeshStandardMaterial({ 
+            color: 0xffffff,
+            emissive: 0x444444,
+            emissiveIntensity: 0.8,
+            roughness: 0.1,
+            metalness: 0.9,
             side: THREE.DoubleSide
-        }); // pale yellow-white
+        });
+        
         const pulsar = new THREE.Mesh(pulsarGeo, pulsarMat);
         scene.add(pulsar);
 
-        // 📡 Radio Jets
+        // Add surface details with displacement
+        const displacementMap = new THREE.TextureLoader().load('https://threejs.org/examples/textures/terrain/grasslight-big.jpg');
+        pulsarMat.displacementMap = displacementMap;
+        pulsarMat.displacementScale = 0.1;
+
+        // 📡 Realistic Radio Jets with multiple components
+        const jetGroup = new THREE.Group();
+        scene.add(jetGroup);
+
+        // Main jet material - more realistic blue-white
         const jetMaterial = new THREE.MeshBasicMaterial({
-            color: 0x99ccff,
+            color: 0x87ceeb,
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.8,
             blending: THREE.AdditiveBlending,
             depthWrite: false
         });
 
-        const jetHeight = 10;
-        const jetRadius = 0.3;
+        // High-energy particle jet material
+        const particleJetMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
 
-        // Top Jet
+        const jetHeight = 15;
+        const jetRadius = 0.2;
+
+        // Top Jet - Main radio beam
         const topJetGeo = new THREE.ConeGeometry(jetRadius, jetHeight, 32, 1, true);
         const topJet = new THREE.Mesh(topJetGeo, jetMaterial);
         topJet.position.set(0, jetHeight / 2, 0);
-        scene.add(topJet);
+        jetGroup.add(topJet);
 
-        // Bottom Jet (clone and flip)
+        // Bottom Jet
         const bottomJet = topJet.clone();
-        bottomJet.rotation.x = Math.PI; // flip upside-down
+        bottomJet.rotation.x = Math.PI;
         bottomJet.position.set(0, -jetHeight / 2, 0);
-        scene.add(bottomJet);
+        jetGroup.add(bottomJet);
 
-        // Attach both jets to pulsar so they rotate together
-        pulsar.add(topJet);
-        pulsar.add(bottomJet);
+        // High-energy particle jets (narrower, more focused)
+        const particleJetGeo = new THREE.ConeGeometry(jetRadius * 0.3, jetHeight * 1.2, 16, 1, true);
+        const topParticleJet = new THREE.Mesh(particleJetGeo, particleJetMaterial);
+        topParticleJet.position.set(0, jetHeight * 0.6, 0);
+        jetGroup.add(topParticleJet);
 
-        // Pulsar beam (sprite)
+        const bottomParticleJet = topParticleJet.clone();
+        bottomParticleJet.rotation.x = Math.PI;
+        bottomParticleJet.position.set(0, -jetHeight * 0.6, 0);
+        jetGroup.add(bottomParticleJet);
+
+        // Attach jet group to pulsar
+        pulsar.add(jetGroup);
+
+        // 🌟 Accretion Disk around pulsar
+        const diskGeometry = new THREE.RingGeometry(1.5, 8, 64);
+        const diskMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff6b6b,
+            transparent: true,
+            opacity: 0.7,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+        });
+        const accretionDisk = new THREE.Mesh(diskGeometry, diskMaterial);
+        accretionDisk.rotation.x = Math.PI / 2; // Rotate to be horizontal
+        pulsar.add(accretionDisk);
+
+        // 🌟 Pulsar beam (sprite) - more realistic
         const beamTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/lensflare/lensflare0.png');
         const beamMat = new THREE.SpriteMaterial({
             map: beamTexture,
@@ -146,23 +215,81 @@
             transparent: true
         });
         const beam = new THREE.Sprite(beamMat);
-        beam.scale.set(10, 10, 1.0);
+        beam.scale.set(8, 8, 1.0);
         scene.add(beam);
 
-        // 🎬 Animate
+        // Add magnetic field lines visualization
+        const fieldLineGeometry = new THREE.BufferGeometry();
+        const fieldLinePositions = [];
+        const fieldLineCount = 8;
+        
+        for (let i = 0; i < fieldLineCount; i++) {
+            const angle = (i / fieldLineCount) * Math.PI * 2;
+            const radius = 3;
+            const height = 6;
+            
+            // Create curved field lines
+            for (let j = 0; j <= 20; j++) {
+                const t = j / 20;
+                const x = Math.cos(angle) * radius * Math.cos(t * Math.PI);
+                const y = height * (t - 0.5) * 2;
+                const z = Math.sin(angle) * radius * Math.cos(t * Math.PI);
+                fieldLinePositions.push(x, y, z);
+            }
+        }
+        
+        fieldLineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(fieldLinePositions, 3));
+        const fieldLineMaterial = new THREE.LineBasicMaterial({
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0.3
+        });
+        const fieldLines = new THREE.Line(fieldLineGeometry, fieldLineMaterial);
+        pulsar.add(fieldLines);
+
+        // 🎬 Animate - More realistic pulsar behavior
         let pulseScale = 1;
         let scaleDirection = 1;
+        let pulsePhase = 0;
 
         function animate() {
             requestAnimationFrame(animate);
 
-            pulsar.rotation.y += 0.1;
-            pulsar.rotation.x += 0.02;
+            // Realistic pulsar rotation (very fast)
+            pulsar.rotation.y += 0.15;
+            pulsar.rotation.x += 0.03;
 
-            pulseScale += scaleDirection * 0.1;
-            if (pulseScale > 2.5 || pulseScale < 1) scaleDirection *= -1;
-            beam.scale.set(pulseScale * 5, pulseScale * 5, 1);
+            // Accretion disk rotation
+            accretionDisk.rotation.z += 0.02;
+
+            // Pulsar beam pulsing (more realistic timing)
+            pulsePhase += 0.1;
+            pulseScale = 1 + Math.sin(pulsePhase) * 0.8;
+            beam.scale.set(pulseScale * 6, pulseScale * 6, 1);
             beam.position.copy(pulsar.position);
+
+            // Jet intensity variation
+            const jetIntensity = 0.6 + Math.sin(pulsePhase * 2) * 0.3;
+            jetMaterial.opacity = jetIntensity;
+            particleJetMaterial.opacity = jetIntensity * 0.8;
+
+            // Accretion disk brightness variation
+            const diskBrightness = 0.5 + Math.sin(pulsePhase * 1.5) * 0.3;
+            diskMaterial.opacity = diskBrightness;
+
+            // Field lines rotation
+            fieldLines.rotation.y += 0.01;
+
+            // Pulsar light intensity variation
+            const lightIntensity = 1.5 + Math.sin(pulsePhase * 3) * 0.8;
+            pulsarLight.intensity = lightIntensity;
+            
+            // Jet lights intensity
+            const jetLightIntensity = 0.8 + Math.sin(pulsePhase * 2) * 0.4;
+            jetLight1.intensity = jetLightIntensity;
+            jetLight2.intensity = jetLightIntensity;
+
+            // Background is now static and large enough to always cover the view
 
             controls.update();
             renderer.render(scene, camera);

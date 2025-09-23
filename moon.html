@@ -52,6 +52,10 @@
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.05;
+        
+        // Limit zoom out to prevent seeing black hole
+        controls.minDistance = 3;
+        controls.maxDistance = 50;
 
         // Ambient light for soft shading
         scene.add(new THREE.AmbientLight(0x222222));
@@ -61,13 +65,20 @@
         moonLight.position.set(5, 3, 5);
         scene.add(moonLight);
 
-        // 🌌 Background
+        // 🌌 Background - Reliable galaxy background
         const loader = new THREE.TextureLoader();
         loader.load('images/starmap_random_2020_4k_gal.png', texture => {
-            const bgGeometry = new THREE.SphereGeometry(100, 64, 64);
-            const bgMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
+            // Create a very large background sphere
+            const bgGeometry = new THREE.SphereGeometry(500, 64, 64);
+            const bgMaterial = new THREE.MeshBasicMaterial({ 
+                map: texture, 
+                side: THREE.BackSide 
+            });
             const galaxy = new THREE.Mesh(bgGeometry, bgMaterial);
             scene.add(galaxy);
+            
+            // Keep background centered and static
+            galaxy.position.set(0, 0, 0);
         });
 
         // 🌕 Moon

@@ -63,7 +63,7 @@
         mainLight.position.set(-20, 10, -30);
         scene.add(mainLight);
 
-        const sunGeo = new THREE.SphereGeometry(2, 64, 64);
+        const sunGeo = new THREE.SphereGeometry(1.5, 64, 64);
         const sunMat = new THREE.MeshBasicMaterial({ color: 0xFFE87C });
         const sun = new THREE.Mesh(sunGeo, sunMat);
         sun.position.set(-20, 10, -30);
@@ -76,7 +76,7 @@
             blending: THREE.AdditiveBlending
         });
         const sprite = new THREE.Sprite(glowMat);
-        sprite.scale.set(10, 10, 1.0);
+        sprite.scale.set(7.5, 7.5, 1.0);
         sprite.position.copy(sun.position);
         scene.add(sprite);
 

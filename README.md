@@ -28,6 +28,10 @@ An interactive 3D web application that allows you to explore the solar system an
 - 🌕 **Moon** - Earth's natural satellite
 - **Pulsar** - Extra solar object
 
+### Special Projects
+- 🌙 **Lunar Industrialization** - Complete lunar industrialization & Earth restoration plan
+- 🌟 **Astraholon** - The ultimate mega-structure space colony
+
 ## 🚀 Getting Started
 
 1. **Clone or Download** the project files
@@ -63,6 +67,13 @@ space/
 ├── neptune.html       # Neptune visualization
 ├── moon.html          # Moon visualization
 ├── pulsar.html        # Pulsar visualization
+├── lunar-industrialization/  # Lunar industrialization project
+│   └── index.html
+├── astraholon/        # Astraholon space colony project
+│   ├── index.html
+│   ├── script.js
+│   ├── style.css
+│   └── README.md
 ├── images/            # High-resolution textures
 │   ├── 1_earth_8k.jpg
 │   ├── Map_of_the_full_sun.jpg

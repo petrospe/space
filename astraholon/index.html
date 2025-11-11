@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Astraholon - Technical Blueprint</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PROJECT ASTRAHOLON</h1>
+            <p class="subtitle">Technical Blueprint for Next-Gen Space Colonization</p>
+        </div>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#structure">Structure</a></li>
+            <li><a href="#life-support">Life Support</a></li>
+            <li><a href="#energy">Energy</a></li>
+            <li><a href="#society">Society</a></li>
+            <li><a href="#defense">Defense</a></li>
+            <li><a href="#photo-gallery">Gallery</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <section id="overview">
+            <h2>Mission Overview</h2>
+            <p>Project Astraholon represents humanity's most ambitious extraterrestrial habitat, designed as a <span class="data-highlight">permanent, self-sustaining colony</span> at Earth-Moon L4 Lagrange point. This rotating megastructure combines cutting-edge engineering with ecological balance to support long-term human settlement in deep space.</p>
+            
+            <div class="diagram-container">
+                <figure class="colony-diagram">
+                    <!-- Single image with responsive sizing -->
+                    <img 
+                        src="images/astraholon_external_v1.png" 
+                        alt="3D render of Astraholon cylindrical space colony showing:
+                             - 32km long cylindrical structure
+                             - Hexagonal armor plating
+                             - Six docking ports with attached spacecraft
+                             - Earth visible in background"
+                        class="colony-render"
+                        loading="lazy"
+                        width="1344"
+                        height="768"
+                    >
+                    
+                    <figcaption class="diagram-caption">
+                        <span class="figure-number">Fig.1</span> 
+                        <span class="figure-description">Astraholon external structure (1344×768). Visible features: Main docking hubs, radiator fins, and meteoroid shielding.</span>
+                    </figcaption>
+                </figure>
+            </div>
+            
+            <h3>Core Mission Parameters</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Specification</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>EM-L4 Lagrange Point</td>
+                    <td>Stable orbital position with continuous solar access</td>
+                </tr>
+                <tr>
+                    <td>Population Capacity</td>
+                    <td>50,000–100,000</td>
+                    <td>Phase 1: 50K, Phase 2: 100K with expansion</td>
+                </tr>
+                <tr>
+                    <td>Construction Timeline</td>
+                    <td>2145–2165 (20 years)</td>
+                    <td>Assumes lunar He-3 mining infrastructure</td>
+                </tr>
+                <tr>
+                    <td>Primary Materials</td>
+                    <td>12.7 million tons</td>
+                    <td>80% lunar/asteroid-sourced, 20% Earth-launched</td>
+                </tr>
+            </table>
+        </section>
+        
+        <section id="structure">
+            <h2>Structural Engineering</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Macro-Architecture</h3>
+                    <ul class="specs">
+                        <li><strong>Type:</strong> O'Neill Cylinder derivative</li>
+                        <li><strong>Length:</strong> 32 km (20 mi)</li>
+                        <li><strong>Diameter:</strong> 8 km (5 mi)</li>
+                        <li><strong>Rotation:</strong> 1 RPM @ 1g (9.81 m/s²)</li>
+                        <li><strong>Shell Thickness:</strong> 40m composite armor</li>
+                    </ul>
+                    
+                    <h4>Structural Composition</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Layer</th>
+                            <th>Material</th>
+                            <th>Thickness</th>
+                        </tr>
+                        <tr>
+                            <td>Outer Shield</td>
+                            <td>Graphene-Ti alloy</td>
+                            <td>12m</td>
+                        </tr>
+                        <tr>
+                            <td>Radiation Barrier</td>
+                            <td>LiH/H₂O matrix</td>
+                            <td>8m</td>
+                        </tr>
+                        <tr>
+                            <td>Structural Frame</td>
+                            <td>Carbon nanotube lattice</td>
+                            <td>15m</td>
+                        </tr>
+                        <tr>
+                            <td>Inner Hull</td>
+                            <td>Self-healing ceramic</td>
+                            <td>5m</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <h3>Interior Configuration</h3>
+                    <ul class="specs">
+                        <li><strong>Land Area:</strong> 804 km² (310 mi²)</li>
+                        <li><strong>Atmosphere:</strong> 101.3 kPa (Earth sea level)</li>
+                        <li><strong>Valley Systems:</strong> 3 longitudinal zones</li>
+                    </ul>
+                    
+                    <h4>Zone Allocation</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Zone</th>
+                            <th>Area</th>
+                            <th>Function</th>
+                        </tr>
+                        <tr>
+                            <td>Residential</td>
+                            <td>40%</td>
+                            <td>Arcologies, parks, services</td>
+                        </tr>
+                        <tr>
+                            <td>Agricultural</td>
+                            <td>35%</td>
+                            <td>Farms, forests, water systems</td>
+                        </tr>
+                        <tr>
+                            <td>Industrial</td>
+                            <td>25%</td>
+                            <td>Manufacturing, research, docks</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Axial Transport</h4>
+                    <ul class="specs">
+                        <li><strong>MagLev Network:</strong> 320 km track system</li>
+                        <li><strong>Transit Time:</strong> 18 min end-to-end</li>
+                        <li><strong>Capacity:</strong> 20,000 passengers/hour</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="diagram-container">
+                <figure class="cutaway-diagram">
+                    <img src="images/astraholon_interior_crosssection_v1.png"
+                         alt="Cross-section of Astraholon interior showing:
+                              - Blue residential zones with arcologies
+                              - Green agricultural areas with hydroponics
+                              - Orange industrial sector along central axis
+                              - Human figures for scale"
+                         loading="lazy"
+                         width="1344"
+                         height="768">
+                    
+                    <figcaption class="diagram-caption">
+                        <span class="figure-number">Fig.2</span>
+                        <span class="figure-description">Habitat zone distribution with key infrastructure layers. Gravity gradient: 1g (outer surface) to 0g (central axis).</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+        
+        <section id="life-support">
+            <h2>Life Support Systems</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Atmospheric Control</h3>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Component</th>
+                            <th>Specification</th>
+                        </tr>
+                        <tr>
+                            <td>O₂ Generation</td>
+                            <td>80% algae, 20% electrolysis</td>
+                        </tr>
+                        <tr>
+                            <td>CO₂ Scrubbing</td>
+                            <td>500 ton/day capacity</td>
+                        </tr>
+                        <tr>
+                            <td>Trace Gas Control</td>
+                            <td>Molecular sieves + catalytic converters</td>
+                        </tr>
+                        <tr>
+                            <td>Pressure Integrity</td>
+                            <td>Triple redundancy</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Weather Systems</h4>
+                    <ul class="specs">
+                        <li><strong>Precipitation:</strong> 5cm/month controlled cycle</li>
+                        <li><strong>Temperature:</strong> 18–24°C (64–75°F)</li>
+                        <li><strong>Wind Patterns:</strong> 5–15 km/h (3–9 mph)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>Biospheric Balance</h3>
+                    <table class="tech-table">
+                        <tr>
+                            <th>System</th>
+                            <th>Capacity</th>
+                        </tr>
+                        <tr>
+                            <td>Hydroponics</td>
+                            <td>4.2 km² vertical farms</td>
+                        </tr>
+                        <tr>
+                            <td>Aquaculture</td>
+                            <td>120 million L water volume</td>
+                        </tr>
+                        <tr>
+                            <td>Soil Biomes</td>
+                            <td>28 km² natural terrain</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Waste Processing</h4>
+                    <ul class="specs">
+                        <li><strong>Organic:</strong> 100% composting</li>
+                        <li><strong>Plastic:</strong> Pyrolysis to feedstock</li>
+                        <li><strong>Metals:</strong> 98% recycling rate</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Additional sections for Energy, Society, Defense would follow same pattern -->
+        <section id="energy">
+            <h2>Energy & Infrastructure</h2>
+            <div class="grid">
+                
+                <div class="card">
+                    <h3>Power Generation</h3>
+                    <ul class="specs">
+                        <li><strong>Primary:</strong> D-T Fusion Reactors (Deuterium-Tritium) → <strong>500 MW baseline</strong></li>
+                        <li><strong>Secondary:</strong> Solar Panels (deployable wings outside the cylinder)</li>
+                        <li><strong>Backup:</strong> Antimatter Reserve (emergency power for <strong>6 months</strong>)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Transportation Network</h3>
+                    <strong>Internal:</strong>
+                    <ul class="specs">
+                        <li>MagLev Trams (along the interior surface)</li>
+                        <li>Elevator Shafts (to the zero-G core)</li>
+                    </ul>
+                    <strong>External:</strong>
+                    <ul class="specs">
+                        <li>Orbital Tugs (ferry cargo from nearby asteroids)</li>
+                        <li>Passenger Shuttles (to Earth/Moon/Mars)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Communication & Data</h3>
+                    <ul class="specs">
+                      <li>Quantum Entanglement Comms (instantaneous, no lag)</li>
+                      <li>Colony-Wide AI ("<strong>AstraMind</strong>")</li>
+                      <ul>
+                        <li>Manages life support, traffic, and conflict resolution</li>
+                      </ul>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="society">
+            <h2>Social Architecture</h2>
+            
+            <div class="grid">
+                <!-- Population & Demographics Card -->
+                <div class="card">
+                    <h3>Population & Demographics</h3>
+                    <ul class="specs">
+                        <li><strong>Total Residents:</strong> 50,000–100,000</li>
+                        <li><strong>Composition:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Scientists (32%)</li>
+                                <li>Engineers (28%)</li>
+                                <li>Artists/Creatives (15%)</li>
+                                <li>Families/Service (25%)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <h4>Cultural Mix</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Group</th>
+                            <th>Percentage</th>
+                            <th>Characteristics</th>
+                        </tr>
+                        <tr>
+                            <td>Earth-born</td>
+                            <td>65%</td>
+                            <td>First-generation settlers</td>
+                        </tr>
+                        <tr>
+                            <td>Spacers</td>
+                            <td>35%</td>
+                            <td>Native-born colonists</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Language Distribution</h4>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <div style="flex: 1; text-align: center; background: var(--accent); padding: 0.5rem; border-radius: 4px;">
+                            <div style="font-weight: bold;">English</div>
+                            <div>70%</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; background: var(--accent); padding: 0.5rem; border-radius: 4px;">
+                            <div style="font-weight: bold;">Mandarin</div>
+                            <div>15%</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; background: var(--accent); padding: 0.5rem; border-radius: 4px;">
+                            <div style="font-weight: bold;">Spanish</div>
+                            <div>10%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Political System Card -->
+                <div class="card">
+                    <h3>Political System</h3>
+                    <ul class="specs">
+                        <li><strong>Governance Model:</strong> Technocratic Council</li>
+                        <li><strong>Council Composition:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Chief Science Officer</li>
+                                <li>Head Engineer</li>
+                                <li>Medical Director</li>
+                                <li>3 Elected Representatives</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <h4>Decision Making Process</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Process</th>
+                            <th>Frequency</th>
+                            <th>Participation</th>
+                        </tr>
+                        <tr>
+                            <td>AI-Assisted Votes</td>
+                            <td>Bi-monthly</td>
+                            <td>89% avg turnout</td>
+                        </tr>
+                        <tr>
+                            <td>Expert Panels</td>
+                            <td>Weekly</td>
+                            <td>Subject specialists</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="specs" style="margin-top: 1rem;">
+                        <strong>VR Voting System:</strong> Neural-linked interfaces provide immersive policy simulations before voting
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid" style="margin-top: 1.5rem;">
+                <!-- Economy Card -->
+                <div class="card">
+                    <h3>Economic System</h3>
+                    <h4>Primary Industries</h4>
+                    <ul class="specs">
+                        <li><strong>Asteroid Mining:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Platinum group metals</li>
+                                <li>Rare earth elements</li>
+                                <li>Water ice</li>
+                            </ul>
+                        </li>
+                        <li><strong>Zero-G Manufacturing:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Perfect crystal growth</li>
+                                <li>Carbon nanotube production</li>
+                                <li>Pharmaceuticals</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <h4>Monetary System</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Currency</th>
+                            <th>Type</th>
+                            <th>Security</th>
+                        </tr>
+                        <tr>
+                            <td>AstroCredits (AC)</td>
+                            <td>Cryptocurrency</td>
+                            <td>Quantum blockchain</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="specs" style="margin-top: 1rem;">
+                        <strong>Universal Basic Income:</strong> 2,500 AC/month covers all essentials
+                    </div>
+                </div>
+                
+                <!-- Daily Life Card -->
+                <div class="card">
+                    <h3>Daily Life</h3>
+                    <h4>Work Structure</h4>
+                    <ul class="specs">
+                        <li><strong>Work Week:</strong> 4 days (20 hours)</li>
+                        <li><strong>Automation Level:</strong> 78% of repetitive tasks</li>
+                        <li><strong>Primary Sectors:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Research & Development</li>
+                                <li>Habitat Maintenance</li>
+                                <li>Creative Industries</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <h4>Leisure Activities</h4>
+                    <table class="tech-table">
+                        <tr>
+                            <th>Category</th>
+                            <th>Popular Examples</th>
+                        </tr>
+                        <tr>
+                            <td>Sports</td>
+                            <td>Orbital soccer, Free-fall ballet</td>
+                        </tr>
+                        <tr>
+                            <td>Entertainment</td>
+                            <td>VR tourism, Holographic theater</td>
+                        </tr>
+                        <tr>
+                            <td>Social</td>
+                            <td>Microgravity gardens, Community fab-labs</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="heatmap-container">
+                <figure class="activity-map">
+                    <img src="images/cultural_heatmap_v1.png"
+                        alt="Cultural activity heatmap showing:
+                            - Purple VR zones in residential sectors
+                            - Orange sports clusters near central axis
+                            - Yellow social hotspots at valley intersections
+                            - Green creative spaces along agricultural rim"
+                        loading="lazy"
+                        width="1344"
+                        height="768">
+                    
+                    <figcaption class="map-caption">
+                        <span class="figure-number">Fig.5</span>
+                        <span class="figure-description">Leisure time distribution based on 12-month activity tracking. Peak hours: 18:00-22:00 colony time.</span>
+                        
+                        <!-- Optional interactive legend -->
+                        <div class="heatmap-legend">
+                            <div class="legend-item" style="--color: #5e35b1">VR Entertainment</div>
+                            <div class="legend-item" style="--color: #ff5722">Micro-G Sports</div>
+                            <div class="legend-item" style="--color: #fbc02d">Social Lounges</div>
+                            <div class="legend-item" style="--color: #388e3c">Creative Spaces</div>
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+        
+        <section id="defense">
+            <h2>Defense Systems</h2>
+            <div class="card">
+                <h3>Integrated Protection Matrix</h3>
+                <table class="tech-table">
+                    <tr>
+                        <th>System</th>
+                        <th>Range</th>
+                        <th>Response Time</th>
+                    </tr>
+                    <tr>
+                        <td>Laser Point Defense</td>
+                        <td>1,000 km</td>
+                        <td>0.3 sec</td>
+                    </tr>
+                    <tr>
+                        <td>Magnetic Shield</td>
+                        <td>10 km radius</td>
+                        <td>Continuous</td>
+                    </tr>
+                    <tr>
+                        <td>Decoy Drones</td>
+                        <td>5,000 km</td>
+                        <td>2 min deploy</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <div  id="photo-gallery" class="gallery-grid">
+            <!-- Repeat for each image -->
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/astraholon_cover.png" 
+                        alt="Hero shot of O'Neill cylinder space colony floating above Earth, hexagonal armored plating glowing under sunlight, multiple docked spacecraft, construction drones"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/astraholon_cover.png">
+                <figcaption>Fig.1 - Astraholon cover</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/exterior_day.png" 
+                        alt="Daytime exterior view of Astraholon colony"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/exterior_day.png">
+                <figcaption>Fig.2 - Colony Exterior (Day)</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/exterior_night.png" 
+                        alt="Nightime exterior view of Astraholon colony"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/exterior_night.png">
+                <figcaption>Fig.3 - Colony Exterior (Night)</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/cross_section.png" 
+                        alt="Cross-Section"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/cross_section.png">
+                <figcaption>Fig.4 - Technical cutaway of cylindrical habitat showing</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/residential.png" 
+                        alt="Residential Zone"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/residential.png">
+                <figcaption>Fig.5 - Terraced arcologies inside space colony</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/agricultural.png" 
+                        alt="Agricultural Biome"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/agricultural.png">
+                <figcaption>Fig.6 - Tiered hydroponic farms in space colony</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/industrial.png" 
+                        alt="Industrial Core"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/industrial.png">
+                <figcaption>Fig.7 - Zero-gravity manufacturing hub</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/transport.png" 
+                        alt="Transportation Hub"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/transport.png">
+                <figcaption>Fig.8 - Central maglev transit station</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/leisure.png" 
+                        alt="Leisure Activities"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/leisure.png">
+                <figcaption>Fig.9 - Microgravity sports arena in space colony</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/command.png" 
+                        alt="Command Center"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/command.png">
+                <figcaption>Fig.10 - Command Center</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/construction.png" 
+                        alt="Construction Phase"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/construction.png">
+                <figcaption>Fig.11 - In-progress space colony construction</figcaption>
+            </figure>
+            <figure class="gallery-item">
+                <img src="images/astraholon_album/heatmap.png" 
+                        alt="Cultural Heatmap"
+                        loading="lazy"
+                        class="gallery-img"
+                        data-full="images/astraholon_album/heatmap.png">
+                <figcaption>Fig.12 - Vibrant heatmap overlay on colony interior showing activity zones</figcaption>
+            </figure>
+            <!-- ... -->
+        </div>
+        
+        <div id="image-modal" class="modal">
+            <span class="modal-close">&times;</span>
+            <img class="modal-content" id="modal-img">
+            <div id="modal-caption"></div>
+        </div>
+        
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Project Astraholon - Technical Design Document v3.2</p>
+            <p class="footnote">All specifications subject to revision during Phase 1 construction</p>
+        </div>
+    </footer>
+    <script src="script.js"></script> 
+</body>
+</html>
